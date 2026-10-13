@@ -15,23 +15,30 @@ A modern, responsive web application for college students, club coordinators, an
 ### 2. Club Management
 - **Official Club Directory**: Full listings for Coding Club, Robotics Club, Sports & Athletics Club, Music & Acoustics Club, and Photography & Visual Arts.
 - **Club Detail Modal**: Meeting schedules, lab/venue locations, lead coordinators, and active member rosters.
-- **Join & Leave Clubs**: Real-time membership tracking with an instant **+25 participation points** welcome reward and celebratory confetti.
+- **Join & Leave Clubs**: Real-time membership tracking and club participation hub.
 
 ### 3. Event Management
 - **Event Categorization**: Upcoming and completed hackathons, tournaments, workshops, and acoustic jams.
 - **Registration & Capacity Tracking**: Visual capacity meters with duplicate registration prevention.
-- **Event Logistics**: Dates, times, locations, host club banners, and point values.
+- **Event Logistics**: Dates, times, locations, host club banners, and participation rewards.
 
-### 4. Attendance Tracking
-- **Coordinator Verification Hub**: Club coordinators and administrators can select an event and verify student check-ins.
-- **Attendance Actions**: Toggle "Present" or "Absent" for each registered student.
-- **Gamified Rewards**: Marking a student present automatically credits the event's participation points directly to their profile and updates the live leaderboard.
+### 4. Attendance Tracking & Points Engine
+- **Participation Points Rule**: Every verified club activity grants strictly **5 points** (`Points = Participations × 5`). Arbitrary bonuses removed; more participation yields more points.
+- **Coordinator Verification Hub**: Club coordinators and administrators select an event and verify student check-ins.
+- **Attendance Actions**: Toggle "Present" (+5 pts) or "Absent" for each registered student in real time.
 - **Live Statistics**: Real-time attendance rate percentages and attendance counters.
 
-### 5. University Leaderboard
-- **Podium Showcase**: Top 3 ranking podium cards for Gold (#1), Silver (#2), and Bronze (#3) champions.
-- **Full Ranks Table**: Filterable student leaderboard displaying points, club memberships, verified events attended, and earned badges.
-- **Current User Highlighting**: Visual indicators pinpointing the student's personal rank.
+### 5. Dual University Leaderboards
+- **🏆 Activity Points Leaderboard**:
+  - Ranked dynamically by earned activity points (`Attended Sessions × 5 pts`).
+  - Top 3 champion podium with gold crown, silver and bronze medals.
+  - Shows activity participation breakdown, department, and earned badges.
+- **📊 Attendance Positions Leaderboard**:
+  - Positions ranked strictly by total verified club attendances and attendance reliability rate.
+  - Displays attendance position (#1, #2, #3...), sessions attended (`N of M`), attendance rate progress bar, and standing badges (Top / Good / Regular).
+- **Classification & Cohort Filters**:
+  - Filter both leaderboards across **1st Year & 2nd Year** and **Section A & Section B** (or quick preset combinations).
+  - Animated SVG avatars custom-rendered based on student gender (`male`, `female`, `other`).
 
 ### 6. Admin Console
 - **Campus Statistics**: Total clubs, total students, total coordinators, scheduled events, verified attendances, and points pool.
@@ -50,27 +57,40 @@ A modern, responsive web application for college students, club coordinators, an
 
 ---
 
-## 👥 Demo Personas
+## 👥 Demo Personas & Full Access
 
-Use the **Role Preview** pills in the top header to instantly switch between roles:
-
-| Role | Persona Name | Email | Password | Highlights |
+| Role | Persona Name | Email | Password | Access Privileges |
 | :--- | :--- | :--- | :--- | :--- |
+| **Super Admin** | **Kunal Gaur** | `kunal@clubsphere.edu` | `[Protected Admin Credential]` | **Full Master Access**: Admin Console, create/edit/delete clubs & events, mark attendance, manage users & roles |
 | **Student** | Alex Rivera | `alex.rivera@college.edu` | `student123` | Member of Coding & Photography, registered for HackForge 2026 |
 | **Coordinator** | Maya Lin | `maya.lin@college.edu` | `coordinator123` | Lead of Robotics Club, marks attendance, awards points |
-| **Admin** | Prof. Robert Vance | `admin@college.edu` | `admin123` | Campus Club Director, full administrative console |
+| **Faculty Admin** | Prof. Robert Vance | `admin@college.edu` | `[Protected Admin Credential]` | Campus Club Director, university analytics |
 
 ---
 
-## 💻 Running Locally
+## 💻 Running Locally & Backend Architecture
+
+The application runs as a complete fullstack service:
 
 ```bash
-# Install dependencies
-npm install
-
-# Start Vite dev server (serves frontend + embedded API)
+# Start both Backend (Port 3001) and Frontend (Port 5173) concurrently:
 npm run dev
 
-# Open http://localhost:5173
+# Or start Backend separately:
+npm run server       # Starts Express API at http://localhost:3001
+
+# Or start Frontend separately:
+npm run dev:frontend # Starts Vite at http://localhost:5173
 ```
+
+### Direct Backend API URLs
+- **Root Overview & Docs**: `GET http://localhost:3001/`
+- **Health Check**: `GET http://localhost:3001/health`
+- **API Status**: `GET http://localhost:3001/api/status`
+- **Clubs**: `GET http://localhost:3001/api/clubs`
+- **Events**: `GET http://localhost:3001/api/events`
+- **Attendance**: `GET http://localhost:3001/api/events/:id/attendance`
+- **Leaderboard**: `GET http://localhost:3001/api/leaderboard`
+- **Elevate to Admin**: `POST http://localhost:3001/api/auth/elevate-me` (`{ "userId": "<id>" }`)
 # Clubsphere
+# club-sphere
