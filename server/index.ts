@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
 import { initDatabase } from './db';
 import { apiRouter } from './api';
 import { connectMongoDB } from './mongodb';
@@ -83,6 +85,18 @@ app.get('/health', (req, res) => {
 
 // Mount /api router
 app.use('/api', apiRouter);
+
+// Serve built Vite frontend in production
+const distPath = path.resolve(process.cwd(), 'dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path === '/health') {
+      return next();
+    }
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
 
 // Start server
 (async () => {
